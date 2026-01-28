@@ -1,30 +1,28 @@
-.todoitems {
+.todoitems{
     display: flex;
     justify-content: space-between;
+    padding: 16px 0px;
     align-items: center;
-    padding: 16px 10px;
+
 }
 
-.todoitems-container {
+.todoitems-container{
     display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;              /* ⭐ important */
-    cursor: pointer;
+
 }
 
-.todoitems-text {
+.todoitems-text{
+    padding-left: 16px;
     color: #404040;
     font-size: 22px;
+
 }
 
-/* ✅ sirf text pe line-through */
-.line-through .todoitems-text {
-    text-decoration: line-through solid #ADADAD 3px;
-    opacity: 0.6;
-}
-
-.todoitems-cross-icon {
+.todoitems-cross-icon{
     cursor: pointer;
-    margin-left: 12px;
+    padding-right: 25px;
+}
+
+.line-through{
+    text-decoration: line-through solid #ADADAD 3px;
 }

@@ -1,68 +1,54 @@
 import { useRef, useState, useEffect } from 'react'
 import './CSS/Todo.css'
-import TodoItems from './TodoItems'
+import TodoItems from './TodoItems';
 
-let count = 0
-
+let count = 0;
 const Todo = () => {
-  const [todos, setTodos] = useState([])
-  const inputRef = useRef(null)
+    const [todos, setTodos] = useState([]);
+    const inputRef = useRef(null);
 
-  const add = () => {
-    if (inputRef.current.value.trim() === "") return
+    const add = () => {
+     setTodos([...todos,{
+        no:count++,
+        text:inputRef.current.value,
+        display:""}]);
+     inputRef.current.value = "";
+     localStorage.setItem("todos_count",count)
+    }
+    
 
-    setTodos(prev => [
-      ...prev,
-      {
-        no: count++,
-        text: inputRef.current.value,
-        display: ""
-      }
-    ])
 
-    inputRef.current.value = ""
-    localStorage.setItem("todos_count", count)
-  }
+    useEffect(()=>{
+        setTodos(JSON.parse(localStorage.getItem("todos")));
+        count = localStorage.getItem("todos_count");
+    },[])
 
-  // ✅ SAFE LOAD (refresh bug fix)
-  useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem("todos")) || []
-    setTodos(savedTodos)
-    count = Number(localStorage.getItem("todos_count")) || 0
-  }, [])
 
-  // ✅ INSTANT SAVE (no timeout)
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos))
-  }, [todos])
 
+    useEffect(()=>{
+        setTimeout(()=>{
+    console.log(todos);  
+     localStorage.setItem("todos",JSON.stringify(todos))
+    }, 100);
+    },[todos]);
+
+    
   return (
     <div className='todo'>
-      <div className="todo-header">To-Do List</div>
-
-      <div className="todo-add">
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder='Add Your Task'
-          className='todo-input'
-        />
-        <div onClick={add} className="todo-add-btn">ADD</div>
-      </div>
-
-      <div className="todo-list">
-        {todos.map(item => (
-          <TodoItems
-            key={item.no}          // ✅ stable key
-            setTodos={setTodos}
-            no={item.no}
-            display={item.display}
-            text={item.text}
-          />
-        ))}
-      </div>
+        <div className="todo-header">To-Do List</div>
+        <div className="todo-add">
+            <input ref={inputRef} type="text" placeholder='Add Your Task' className='todo-input' >
+            </input>
+            <div onClick={()=>{add()}} className="todo-add-btn">ADD</div>
+        </div>
+        <div className="todo-list">
+          {todos.map((item,index)=>{
+            return <TodoItems key={index} setTodos={setTodos}  no={item.no} display={item.display} text={item.text}/>
+          
+          } )}  
+        </div>
     </div>
   )
-}
 
+}
 export default Todo
